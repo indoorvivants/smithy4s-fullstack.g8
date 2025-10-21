@@ -1,0 +1,54 @@
+body {
+    background-color: #f0f0f0;
+}
+
+div#root {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, sans-serif;
+    font-size: 2rem;
+    background-color: peachpuff;
+    border: 2px solid maroon;
+    border-radius: 10px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+div.add-form div.add-form-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 10px;
+    gap: 20px;
+}
+
+input.inp {
+    flex: 1;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 2rem;
+    padding: 10px;
+}
+
+button.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4caf50;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+div.errormsg {
+    color: white;
+    font-size: 3rem;
+    font-weight: bold;
+    background-color: maroon;
+    padding: 10px;
+}

@@ -1,0 +1,10 @@
+{
+    "version": "1",
+    "maven": {
+        "dependencies": [
+          "com.disneystreaming.alloy:alloy-core:0.3.14"
+        ]
+    },
+    "sources": ["modules/shared/src/main/smithy/api.smithy"]
+}
+
