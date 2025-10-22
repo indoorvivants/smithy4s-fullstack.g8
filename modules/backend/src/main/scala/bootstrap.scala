@@ -7,7 +7,16 @@ import java.io.File
 import org.typelevel.otel4s.trace.Tracer
 import com.monovore.decline.CommandApp
 import decline_derive.CommandApplication
+import org.typelevel.otel4s.oteljava.OtelJava
 
+/** This method bootstraps a HTTP server from CLI arguments, environment
+  * variables, and from .env file if it's present at the root of working
+  * directory
+  *
+  * @param arguments
+  * @param systemEnv
+  * @return
+  */
 def bootstrap(
     arguments: List[String],
     systemEnv: Map[String, String]
@@ -40,26 +49,16 @@ def bootstrap(
   }
 
   for
-    env <- Resource.eval(allEnv)
-
-    given Tracer[IO] = Tracer.Implicits.noop[IO]
-
+    env    <- Resource.eval(allEnv)
+    otel   <- OtelJava.autoConfigured[IO]()
+    tracer <- otel.tracerProvider.get("org.hellosmithy4s").toResource
+    given Tracer[IO] = tracer
     cli <- IO(CommandApplication.parseOrExit[CLI](arguments, env)).toResource
-
     pgCredentials = PgCredentials.fromEnv(env)
-
     db <- SkunkDatabase.make(pgCredentials, SkunkConfig)
-
-    services = Services.build(
-      logger,
-      db
-    )
-
-    routes <- Routes.build(
-      services
-    )
-
-    _ <- migrate(pgCredentials).toResource
+    services = Services.build(logger, db)
+    routes <- Routes.build(services)
+    _      <- migrate(pgCredentials).toResource
 
     server <- Server(cli.http, routes)
   yield server

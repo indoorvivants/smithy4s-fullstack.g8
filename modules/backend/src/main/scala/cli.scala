@@ -16,19 +16,19 @@ case class CLI(
 
 
 extension [A, B](x: Argument[A])
-  def mapValidated(f: A => ValidatedNel[String, B]): Argument[B] =
+  private def mapValidated(f: A => ValidatedNel[String, B]): Argument[B] =
     new Argument[B]:
       override def read(string: String): ValidatedNel[String, B] =
         x.read(string).andThen(f)
 
       override def defaultMetavar: String = x.defaultMetavar
 
-given Argument[Port] =
+private given Argument[Port] =
   Argument.readInt.mapValidated(p =>
     Port.fromInt(p).toRight(s"Invalid port $p").toValidatedNel
   )
 
-given Argument[Host] =
+private given Argument[Host] =
   Argument.readString.mapValidated(p =>
     Host.fromString(p).toRight(s"Invalid host $p").toValidatedNel
   )

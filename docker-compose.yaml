@@ -8,8 +8,15 @@ services:
       PG_USER: postgres
       PG_DB: smithy4s_fullstack_g8
       PG_PASSWORD: secret
+      JAVA_OPTS: "-Dotel.exporter.otlp.endpoint=http://otel-lgtm:4317"
   postgres:
     image: "postgres:17"
     environment:
       POSTGRES_PASSWORD: secret
       POSTGRES_DB: smithy4s_fullstack_g8
+  otel-lgtm:
+    image: grafana/otel-lgtm
+    ports:
+      - "3000:3000"
+      - "4317:4317"
+      - "4318:4318"

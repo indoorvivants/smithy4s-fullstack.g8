@@ -50,14 +50,21 @@ lazy val backend = projectMatrix
     libraryDependencies ++= Seq(
       "org.http4s" %%% "http4s-ember-server" % Versions.http4s,
       "com.disneystreaming.smithy4s" %%% "smithy4s-http4s" % smithy4sVersion.value,
-      "com.outr"          %%% "scribe"         % Versions.scribe,
-      "com.outr"          %%% "scribe-cats"    % Versions.scribe,
-      "com.outr"          %%% "scribe-slf4j"   % Versions.scribe,
-      "org.tpolecat"      %%% "skunk-core"     % Versions.skunk,
-      "dev.rolang"        %%% "dumbo"          % Versions.dumbo,
-      "com.indoorvivants" %%% "decline-derive" % Versions.declineDerive
+      "com.outr"          %%% "scribe"          % Versions.scribe,
+      "com.outr"          %%% "scribe-cats"     % Versions.scribe,
+      "com.outr"          %%% "scribe-slf4j"    % Versions.scribe,
+      "org.tpolecat"      %%% "skunk-core"      % Versions.skunk,
+      "dev.rolang"        %%% "dumbo"           % Versions.dumbo,
+      "com.indoorvivants" %%% "decline-derive"  % Versions.declineDerive,
+      "org.typelevel"      %% "otel4s-oteljava" % "0.13.1", // <1>
+      "io.opentelemetry" % "opentelemetry-exporter-otlp" % "1.55.0" % Runtime, // <2>
+      "io.opentelemetry" % "opentelemetry-sdk-extension-autoconfigure" % "1.55.0" % Runtime // <3>
+
     ),
     Compile / doc / sources := Seq.empty,
+    javaOptions += "-Dotel.java.global-autoconfigure.enabled=true",       // <4>
+    javaOptions += "-Dotel.service.name=hello-smithy4s",                 // <5>
+    // javaOptions += "-Dotel.exporter.otlp.endpoint=http://localhost:4317", // <6>
     reStart / baseDirectory := (ThisBuild / baseDirectory).value,
     run / baseDirectory     := (ThisBuild / baseDirectory).value,
     (Compile / compile) := ((Compile / compile) dependsOn (Compile / copyResources)).value

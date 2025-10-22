@@ -1,0 +1,13 @@
+**/target
+**/node_modules
+Dockerfile
+.git
+.sbt
+.metals
+.bsp
+**/.bloop
+.zed
+**/*.log
+**/dist
+.env
+docker-compose.yaml
