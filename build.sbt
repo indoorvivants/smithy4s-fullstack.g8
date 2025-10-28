@@ -1,5 +1,3 @@
-import org.scalajs.linker.interface.Report
-import org.scalajs.linker.interface.ModuleSplitStyle
 import smithy4s.codegen.Smithy4sCodegenPlugin
 
 val Versions = new {
