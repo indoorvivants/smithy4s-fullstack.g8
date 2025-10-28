@@ -114,9 +114,6 @@ lazy val tests = projectMatrix
       "dev.rolang"    %%% "dumbo"               % Versions.dumbo
     ),
     Test / fork := true,
-    // Test / envVars += "FRONTEND_DIST" -> ((frontend.js(
-    //   Versions.Scala
-    // ) / sourceDirectory).value.getParentFile() / "dist").toString,
     Compile / doc / sources := Seq.empty
   )
 

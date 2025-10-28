@@ -13,28 +13,35 @@ RUN if [ "$(uname -m)" = "x86_64" ]; then \
     fi && \
     tar -xf node-install.tar.xz && rm *.tar.xz && mv node-v22* node-install
 ENV PATH /workdir/node-install/bin:$PATH
+COPY smithy-build.json .
+COPY .sbtopts .
 COPY project/build.properties project/build.properties
 COPY project/plugins.sbt project/plugins.sbt
+COPY build.sbt .
 RUN sbt --sbt-create version update
 
-COPY modules/ modules/
-COPY build.sbt .
-COPY .sbtopts .
-COPY smithy-build.json .
-RUN sbt backend/stage frontend/frontendBuild
+FROM build as frontend-build
+WORKDIR /workdir
+COPY modules/frontend/ modules/frontend/
+COPY modules/shared/ modules/shared/
+RUN sbt frontend/frontendBuild
+
+FROM build as backend-build
+WORKDIR /workdir
+COPY modules/backend/ modules/frontend/
+COPY modules/shared/ modules/shared/
+RUN sbt backend/stage 
 
 FROM eclipse-temurin:24
 
 RUN apt update && apt install -y nginx
-
-RUN adduser --disabled-login --disabled-password appuser
-
-COPY --from=build /workdir/modules/backend/target/jvm-3/universal/stage /app/
-COPY --from=build /workdir/modules/frontend/dist /app/static/
-RUN chown -R appuser:appuser /app /var/lib/nginx /var/log/nginx /run/
-
 COPY nginx/nginx.conf /etc/nginx/sites-available/default
 COPY nginx/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+
+COPY --from=backend-build /workdir/modules/backend/target/jvm-3/universal/stage /app/
+COPY --from=frontend-build /workdir/modules/frontend/dist /app/static/
+RUN adduser --disabled-login --disabled-password appuser
+RUN chown -R appuser:appuser /app /var/lib/nginx /var/log/nginx /run/
 
 USER appuser
 
