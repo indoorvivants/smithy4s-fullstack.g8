@@ -1,15 +1,14 @@
 package hellosmithy4s
 
-import hellosmithy4s.spec.*
+import scala.scalajs.js.JSON
+
 import com.raquo.laminar.api.L
 import com.raquo.laminar.api.L.*
 import com.raquo.waypoint.*
-import java.util.UUID
-
-import io.circe.{*, given}
+import hellosmithy4s.spec.*
+import io.circe.*
 import io.circe.syntax.*
 import smithy4s.Newtype
-import scala.scalajs.js.JSON
 
 def codec[A: Decoder: Encoder](nt: Newtype[A]): Codec[nt.Type] =
   val decT = summon[Decoder[A]].map(nt.apply)
@@ -17,11 +16,11 @@ def codec[A: Decoder: Encoder](nt: Newtype[A]): Codec[nt.Type] =
 
   Codec.from(decT, encT)
 
-given Codec[Name]   = codec(Name)
+given Codec[Name] = codec(Name)
 
 sealed trait Page derives Codec.AsObject
 object Page:
-  case object Index              extends Page
+  case object Index                extends Page
   case class NameSummary(id: Name) extends Page
 
   val mainRoute = Route.static(Page.Index, root / endOfSegments)
@@ -38,7 +37,7 @@ object Page:
       helloRoute
     ),
     getPageTitle = {
-      case Index          => "Hello from Smithy4s!"
+      case Index           => "Hello from Smithy4s!"
       case NameSummary(id) => s"Summary for key ${id.value}"
     },
     serializePage = pg => pg.asJson.noSpaces,

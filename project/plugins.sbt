@@ -8,8 +8,10 @@ addSbtPlugin("com.eed3si9n"        % "sbt-projectmatrix"      % "0.9.1")
 addSbtPlugin("org.scala-js"        % "sbt-scalajs"            % "1.20.1")
 addSbtPlugin("org.jmotor.sbt"      % "sbt-dependency-updates" % "1.2.9")
 addSbtPlugin("org.scalameta"       % "sbt-scalafmt"           % "2.5.5")
+addSbtPlugin("ch.epfl.scala"       % "sbt-scalafix"           % "0.14.4")
 addSbtPlugin("com.github.sbt"      % "sbt-dynver"             % "5.1.1")
 addSbtPlugin("com.indoorvivants"   % "sbt-forge-vite-webapp"  % "0.1.0")
+addSbtPlugin("com.github.reibitto" % "sbt-welcome"            % "0.2.2")
 
 ThisBuild / libraryDependencySchemes ++= Seq(
   "org.scala-lang.modules" %% "scala-xml" % VersionScheme.Always

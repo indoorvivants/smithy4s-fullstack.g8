@@ -2,7 +2,6 @@ package hellosmithy4s
 
 import com.raquo.laminar.api.L.*
 import hellosmithy4s.spec.*
-import cats.syntax.all.*
 
 class AddKeyForm private (val node: Element)
 object AddKeyForm:

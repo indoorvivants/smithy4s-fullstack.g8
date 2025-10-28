@@ -1,7 +1,6 @@
 package hellosmithy4s
 
 import hellosmithy4s.spec.Name
-import cats.effect.IO
 
 trait HelloSuite:
   self: BaseSuite =>

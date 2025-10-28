@@ -1,8 +1,9 @@
 package hellosmithy4s
 
+import scala.concurrent.ExecutionContext
+
 import com.raquo.laminar.api.L.*
 import com.raquo.waypoint.*
-import scala.concurrent.ExecutionContext
 import hellosmithy4s.Page.NameSummary
 
 def summaryPage(signal: Signal[NameSummary])(using

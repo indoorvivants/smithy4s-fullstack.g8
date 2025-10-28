@@ -4,10 +4,8 @@ import cats.effect.IO
 import cats.effect.kernel.Resource
 import hellosmithy4s.Database
 import hellosmithy4s.Services
-import hellosmithy4s.spec.HelloService
-import scribe.Scribe
-import weaver.*
 import org.typelevel.otel4s.trace.Tracer
+import scribe.Scribe
 
 case class Probe(api: Services)
 

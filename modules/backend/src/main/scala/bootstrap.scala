@@ -1,13 +1,10 @@
 package hellosmithy4s
 
 import cats.effect.*
-import cats.syntax.all.*
-import org.http4s.server.Server
-import java.io.File
-import org.typelevel.otel4s.trace.Tracer
-import com.monovore.decline.CommandApp
 import decline_derive.CommandApplication
+import org.http4s.server.Server
 import org.typelevel.otel4s.oteljava.OtelJava
+import org.typelevel.otel4s.trace.Tracer
 
 /** This method bootstraps a HTTP server from CLI arguments, environment
   * variables, and from .env file if it's present at the root of working

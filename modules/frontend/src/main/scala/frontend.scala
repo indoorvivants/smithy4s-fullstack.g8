@@ -1,14 +1,12 @@
 package hellosmithy4s
 
-import com.raquo.laminar.api.L.*
-import com.raquo.waypoint.Router
-import org.scalajs.dom
-import com.raquo.waypoint.SplitRender
-
-import spec.*
-
 import scala.concurrent.ExecutionContext
 import scala.concurrent.ExecutionContext.Implicits.global
+
+import com.raquo.laminar.api.L.*
+import com.raquo.waypoint.Router
+import com.raquo.waypoint.SplitRender
+import org.scalajs.dom
 
 enum Event:
   case KeyUpdated(i: Int)

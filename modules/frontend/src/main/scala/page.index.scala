@@ -1,9 +1,10 @@
 package hellosmithy4s
 
-import com.raquo.laminar.api.L.*
-import com.raquo.waypoint.*
 import scala.concurrent.ExecutionContext
 import scala.util.*
+
+import com.raquo.laminar.api.L.*
+import com.raquo.waypoint.*
 import hellosmithy4s.spec.NameAlreadyExists
 
 def indexPage(using
@@ -20,13 +21,13 @@ def indexPage(using
       api
         .future(_.hello.add(pair.name))
         .onComplete:
-          case Failure(exc: NameAlreadyExists) => 
+          case Failure(exc: NameAlreadyExists) =>
             error.set("This name is already taken!")
 
-          case Failure(exc) => 
+          case Failure(exc) =>
             org.scalajs.dom.console.log(exc)
             error.set("Server error :(")
-          case Success(_)   => 
+          case Success(_) =>
             error.set("")
             notification
   )

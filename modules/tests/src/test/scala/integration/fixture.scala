@@ -14,7 +14,6 @@ import org.testcontainers.utility.DockerImageName
 import org.typelevel.otel4s.trace.Tracer
 import scribe.Level
 import scribe.Logger
-import java.io.File
 
 def buildApp(
     silenceLogs: Boolean = true

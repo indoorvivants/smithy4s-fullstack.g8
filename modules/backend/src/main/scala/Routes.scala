@@ -3,14 +3,9 @@ package hellosmithy4s
 import cats.data.Kleisli
 import cats.effect.*
 import cats.syntax.all.*
-import hellosmithy4s.spec.HelloService
 import org.http4s.HttpRoutes
-import org.http4s.Request
 import org.http4s.implicits.*
-import scribe.Scribe
-import smithy4s.http4s.SimpleProtocolBuilder
 import smithy4s.http4s.SimpleRestJsonBuilder
-import org.http4s.Response
 
 object Routes:
   def build(

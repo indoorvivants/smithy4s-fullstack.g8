@@ -1,10 +1,11 @@
 package hellosmithy4s
 
-import cats.effect.IO
 import java.io.File
 import java.io.FileInputStream
 
 import scala.jdk.CollectionConverters.*
+
+import cats.effect.IO
 
 object DotEnvLoader:
   def load(file: File): IO[Map[String, String]] =

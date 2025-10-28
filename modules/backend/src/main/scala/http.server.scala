@@ -1,9 +1,10 @@
 package hellosmithy4s
 
-import org.http4s.ember.server.EmberServerBuilder
+import scala.concurrent.duration.*
+
 import cats.effect.IO
 import org.http4s.HttpApp
-import scala.concurrent.duration.*
+import org.http4s.ember.server.EmberServerBuilder
 
 def Server(config: HttpConfig, app: HttpApp[IO]) =
   EmberServerBuilder

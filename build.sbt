@@ -34,11 +34,18 @@ val Config = new {
   val BasePackage = "hellosmithy4s"
 }
 
+inThisBuild(
+  Seq(
+    semanticdbEnabled := true // enable SemanticDB
+  )
+)
+
 lazy val root = project
   .in(file("."))
   .aggregate(backend.projectRefs*)
   .aggregate(shared.projectRefs*)
   .aggregate(frontend.projectRefs*)
+  .aggregate(tests.projectRefs*)
 
 lazy val backend = projectMatrix
   .in(file("modules/backend"))
@@ -62,12 +69,13 @@ lazy val backend = projectMatrix
 
     ),
     Compile / doc / sources := Seq.empty,
-    javaOptions += "-Dotel.java.global-autoconfigure.enabled=true",       // <4>
-    javaOptions += "-Dotel.service.name=hello-smithy4s",                 // <5>
+    javaOptions += "-Dotel.java.global-autoconfigure.enabled=true", // <4>
+    javaOptions += "-Dotel.service.name=hello-smithy4s",            // <5>
     // javaOptions += "-Dotel.exporter.otlp.endpoint=http://localhost:4317", // <6>
     reStart / baseDirectory := (ThisBuild / baseDirectory).value,
     run / baseDirectory     := (ThisBuild / baseDirectory).value,
-    (Compile / compile) := ((Compile / compile) dependsOn (Compile / copyResources)).value
+    (Compile / compile) := ((Compile / compile) dependsOn (Compile / copyResources)).value,
+    scalacOptions += "-Wunused:all"
   )
 
 lazy val shared = projectMatrix
@@ -96,7 +104,8 @@ lazy val frontend = projectMatrix
       "io.circe"     %%% "circe-parser"   % Versions.circe,
       "tech.neander" %%% "smithy4s-fetch" % Versions.smithy4sFetch,
       "org.scala-js" %%% "scala-js-macrotask-executor" % Versions.macroTaskExecutor
-    )
+    ),
+    scalacOptions += "-Wunused:all"
   )
 
 lazy val tests = projectMatrix
@@ -113,8 +122,9 @@ lazy val tests = projectMatrix
       "org.http4s"    %%% "http4s-ember-client" % Versions.http4s % Test,
       "dev.rolang"    %%% "dumbo"               % Versions.dumbo
     ),
-    Test / fork := true,
-    Compile / doc / sources := Seq.empty
+    Test / fork             := true,
+    Compile / doc / sources := Seq.empty,
+    scalacOptions += "-Wunused:all"
   )
 
 lazy val defaults =
@@ -130,3 +140,62 @@ ThisBuild / concurrentRestrictions ++= {
 
 ThisBuild / version ~= (_.replace('+', '-'))
 ThisBuild / dynver ~= (_.replace('+', '-'))
+
+addCommandAlias(
+  "stubTests",
+  s"tests/testOnly *.stub.*"
+)
+addCommandAlias(
+  "integrationTests",
+  s"tests/testOnly *.integrationtest.*"
+)
+addCommandAlias(
+  "fix",
+  s"scalafmtAll; scalafmtSbt; scalafixAll"
+)
+addCommandAlias(
+  "ci",
+  s"scalafmtCheck; scalafixAll --check; test"
+)
+
+ThisBuild / concurrentRestrictions ++= {
+  if (sys.env.contains("CI")) {
+    Seq(
+      Tags.limitAll(4)
+    )
+  } else Seq.empty
+}
+
+ThisBuild / version ~= (_.replace('+', '-'))
+ThisBuild / dynver ~= (_.replace('+', '-'))
+
+import sbtwelcome.*
+
+logo :=
+  s"""
+     | ##### ###### #    # #####  #        ##   ##### ######
+     |   #   #      ##  ## #    # #       #  #    #   #
+     |   #   #####  # ## # #    # #      #    #   #   #####
+     |   #   #      #    # #####  #      ######   #   #
+     |   #   #      #    # #      #      #    #   #   #
+     |   #   ###### #    # #      ###### #    #   #   ######
+     |
+     |Version: ${version.value}
+     |
+     |${scala.Console.YELLOW}Scala ${(backend.jvm(
+      true
+    ) / scalaVersion).value}${scala.Console.RESET}
+     |
+     |""".stripMargin
+
+logoColor := scala.Console.MAGENTA
+
+usefulTasks := Seq(
+  UsefulTask("fx", "fix", "Run Scalafmt and Scalafix"),
+  UsefulTask("st", "stubTests", "Stub tests - fast, only in memory"),
+  UsefulTask(
+    "it",
+    "integrationTests",
+    "Integration tests - run against Docker container, exercising both database and HTTP logic"
+  )
+)

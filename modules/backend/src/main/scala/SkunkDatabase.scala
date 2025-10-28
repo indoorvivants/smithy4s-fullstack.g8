@@ -1,14 +1,17 @@
 package hellosmithy4s
 
 import cats.effect.*
-import skunk.*, skunk.syntax.all.*, codec.all.*
-import skunk.data.Completion
 import cats.syntax.all.*
-import org.typelevel.otel4s.trace.Tracer
-import hellosmithy4s.spec.Name
-import smithy4s.Newtype
 import hellosmithy4s.spec.Item
+import hellosmithy4s.spec.Name
 import hellosmithy4s.spec.NameAlreadyExists
+import org.typelevel.otel4s.trace.Tracer
+import skunk.*
+import skunk.data.Completion
+import skunk.syntax.all.*
+import smithy4s.Newtype
+
+import codec.all.*
 
 class SkunkDatabase private (makeSession: Resource[IO, Session[IO]])
     extends Database,
@@ -85,4 +88,3 @@ object SkunkDatabase:
   end Helpers
 
 end SkunkDatabase
-

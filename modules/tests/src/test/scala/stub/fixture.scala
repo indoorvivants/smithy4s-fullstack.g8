@@ -8,6 +8,6 @@ def buildApp: Resource[cats.effect.IO, Probe] =
   for
     db <- Resource.eval(InMemoryDatabase.create)
     logger = scribe.cats.io
-    probe  <- Probe.build(logger, db)(using Tracer.Implicits.noop)
-    routes <- Routes.build(probe.api)
+    probe <- Probe.build(logger, db)(using Tracer.Implicits.noop)
+    _     <- Routes.build(probe.api)
   yield probe

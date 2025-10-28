@@ -1,11 +1,10 @@
 package hellosmithy4s
 
-import java.io.File
-import com.comcast.ip4s.*
-import decline_derive.*
 import cats.data.ValidatedNel
-import com.monovore.decline.Argument
 import cats.syntax.all.*
+import com.comcast.ip4s.*
+import com.monovore.decline.Argument
+import decline_derive.*
 
 case class HttpConfig(port: Port = port"8080", host: Host = host"localhost")
     derives CommandApplication
@@ -13,7 +12,6 @@ case class HttpConfig(port: Port = port"8080", host: Host = host"localhost")
 case class CLI(
     http: HttpConfig
 ) derives CommandApplication
-
 
 extension [A, B](x: Argument[A])
   private def mapValidated(f: A => ValidatedNel[String, B]): Argument[B] =

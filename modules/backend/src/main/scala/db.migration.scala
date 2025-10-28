@@ -1,9 +1,9 @@
 package hellosmithy4s
 
 import cats.effect.*
-import org.typelevel.otel4s.trace.Tracer
-import dumbo.Dumbo
 import dumbo.ConnectionConfig
+import dumbo.Dumbo
+import org.typelevel.otel4s.trace.Tracer
 
 def migrate(postgres: PgCredentials)(using Tracer[IO]) =
 

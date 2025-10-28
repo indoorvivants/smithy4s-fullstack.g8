@@ -1,20 +1,17 @@
 package hellosmithy4s
 
-import org.http4s.client.Client
-import org.http4s.Uri
-import cats.effect.IO
-
-import spec.HelloService
-
 import scala.concurrent.Future
 import scala.scalajs.js
 import scala.scalajs.js.Promise
 import scala.scalajs.js.Thenable.Implicits.*
 import scala.util.Failure
 import scala.util.Success
+
 import com.raquo.airstream.core.EventStream
 import com.raquo.airstream.core.Signal
 import smithy4s_fetch.SimpleRestJsonFetchClient
+
+import spec.HelloService
 
 def api(using a: Api): Api = a
 
