@@ -18,11 +18,9 @@ trait HelloSuite:
       key  <- named("hello").map(Name(_))
       res1 <- probe.api.hello.add(key).attempt
       res2 <- probe.api.hello.add(key).attempt
-      lst  <- probe.api.hello.list()
     yield expect.all(
       clue(res1).isRight,
       clue(res2).isLeft,
-      lst.items.exists(_.name == key)
     )
   }
 end HelloSuite

@@ -7,9 +7,15 @@ import cats.effect.std.Random
 trait BaseSuite extends IOSuite:
   override type Res = Probe
 
-  lazy val cls = this.getClass.getSimpleName()
+  private lazy val cls = this.getClass.getSimpleName()
 
-  def named(n: String) = Random
+  /** Generates a string with given identifer, but scoped to both the suite
+    * class name and a random alphanumeric identifier. This allows running
+    * suites in parallel and avoid collisions in things such as identifiers
+    *
+    * @param n
+    */
+  def named(n: String): IO[String] = Random
     .scalaUtilRandom[IO]
     .flatMap(_.nextAlphaNumeric.replicateA(10).map(_.mkString))
     .map(cls + "-" + n + "-" + _)
